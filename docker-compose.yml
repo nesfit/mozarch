@@ -1,0 +1,28 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: "pikachu"
+      POSTGRES_PASSWORD: "pikachu"
+      POSTGRES_DB: "pikachu"
+    ports:
+      - 5555:5432
+
+  firefox:
+    image: selenium/standalone-firefox
+    ports:
+      - 4444:4444
+
+  web:
+    build:
+      context: ./mozarch
+      dockerfile: Dockerfile
+    command: bash -c "python3 /MultiFIST/manage.py migrate && python3 /MultiFIST/manage.py runserver 0.0.0.0:8000 && python3 MultiFIST/manage.y migrate.py"
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+      - firefox
