@@ -93,7 +93,7 @@ class WebArchive(models.Model):
 
     def get_scraped_data(self):
         try:
-            scraped_data_dict = ast.literal_eval(self.scraped_data)
+            scraped_data_dict = self.scraped_data
         except Exception:
             return {}
         else:
